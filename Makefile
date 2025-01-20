@@ -4,12 +4,14 @@ CFLAGS = -Wall -Wextra -Werror
 BUILD_DIR = build
 SRC_DIR = src
 INC_DIR = include
+HEADERS = -I ./MLX42/include/ -I$(INC_DIR)
 NAME = fractol
 
 # Configuración de MiniLibX
-MLX_DIR = minilibx
-MLX_LIB = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11
+MLX_DIR = MLX42
+MLX_BUILD_DIR = $(MLX_DIR)/build
+MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
+MLX_FLAGS = -L$(MLX_BUILD_DIR) -ldl -lglfw -pthread -lm
 
 # Archivos fuente y objetos
 SRCS =  $(SRC_DIR)/fractals.c \
@@ -18,32 +20,31 @@ SRCS =  $(SRC_DIR)/fractals.c \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 
-# Reglas
-all: $(NAME)
+# Reglas principales
+all: libmlx $(NAME)
+
+# Compilar MLX42 usando CMake
+libmlx:
+	@cmake -DDEBUG=1 $(MLX_DIR) -B $(MLX_BUILD_DIR) && cmake --build $(MLX_BUILD_DIR) -j4
 
 # Crear el ejecutable
-$(NAME): $(OBJS) $(MLX_LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS)
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS) $(MLX_LIB) 
 
 # Compilación de objetos
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -I$(INC_DIR) -I$(MLX_DIR) -c $< -o $@
-
-# Compilar MiniLibX (si es necesario)
-$(MLX_LIB):
-	make -C $(MLX_DIR)
+	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
 # Limpieza
 clean:
 	rm -rf $(BUILD_DIR)
-	make -C $(MLX_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
+	rm -rf $(NAME)
+	rm -rf $(MLX_BUILD_DIR)
 
 re: fclean all
 
 # Phony
-.PHONY: all clean fclean re
-
+.PHONY: all clean fclean re libmlx

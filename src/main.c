@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:53:10 by enogueir          #+#    #+#             */
-/*   Updated: 2025/01/20 15:41:45 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/01/20 18:24:14 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 int	main()
 {
 
-	void *mlx = mlx_init();
-	
-	mlx_new_window(mlx,1980, 800, "test");
+	mlx_t *mlx;
+
+	mlx = mlx_init(1980, 800, "ALELLUUUUYAAAAAAA", true);
 	mlx_loop(mlx);
+
+	mlx_terminate(mlx);
 }

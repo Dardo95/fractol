@@ -20,6 +20,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 # Archivos fuente y objetos
 SRCS =  $(SRC_DIR)/fractals.c \
 		$(SRC_DIR)/utils.c \
+		$(SRC_DIR)/draw.c \
 		$(SRC_DIR)/main.c
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))

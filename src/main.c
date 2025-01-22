@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:53:10 by enogueir          #+#    #+#             */
-/*   Updated: 2025/01/22 13:08:56 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:02:27 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int	main()
 		mlx_terminate(data.mlx);
 		return (EXIT_FAILURE);
 	}
-	
-
+	draw_mandelbrot(&data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 }

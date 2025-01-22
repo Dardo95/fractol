@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:22:04 by enogueir          #+#    #+#             */
-/*   Updated: 2025/01/22 12:52:53 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:53:18 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ typedef struct s_data
 	double		maxIm;
 	int			maxIter;
 }				t_data;
+
+void	draw_mandelbrot(t_data *data);
+int mandelbrot_iterations(double cRe, double cIm, int maxIter);
 
 #endif

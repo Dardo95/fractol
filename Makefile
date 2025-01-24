@@ -59,3 +59,4 @@ re: fclean all
 
 # Phony
 .PHONY: all clean fclean re libmlx libft
+

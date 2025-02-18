@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:22:04 by enogueir          #+#    #+#             */
-/*   Updated: 2025/01/22 16:53:18 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:12:37 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,13 @@
 # include <stdlib.h>
 
 # define WIDTH 1980
-# define HEIGHT 800
+# define HEIGHT 1980
+
+typedef struct s_complex
+{
+	double	c_real;
+	double	c_im;
+}			t_complex;
 
 typedef struct s_data
 {

@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define WIDTH 1980
-# define HEIGHT 1980
+# define WIDTH 720
+# define HEIGHT 404
 
 typedef struct s_complex
 {
@@ -39,6 +39,8 @@ typedef struct s_data
 }				t_data;
 
 void	draw_mandelbrot(t_data *data);
-int mandelbrot_iterations(double cRe, double cIm, int maxIter);
+int		mandelbrot_iterations(double cRe, double cIm, int maxIter);
+void	handle_scroll(double xoffset, double yoffset, void *param);
+void	handle_keys(mlx_key_data_t keydata, void *param);
 
 #endif

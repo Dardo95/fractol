@@ -44,6 +44,8 @@ int	main()
 		return (EXIT_FAILURE);
 	}
 	draw_mandelbrot(&data);
+	mlx_scroll_hook(data.mlx, handle_scroll, &data);
+	mlx_key_hook(data.mlx, handle_keys, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 }

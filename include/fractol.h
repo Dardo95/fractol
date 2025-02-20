@@ -38,9 +38,8 @@ typedef struct s_data
 	int			maxIter;
 }				t_data;
 
-void	draw_mandelbrot(t_data *data);
-int		mandelbrot_iterations(double cRe, double cIm, int maxIter);
-void	handle_scroll(double xoffset, double yoffset, void *param);
-void	handle_keys(mlx_key_data_t keydata, void *param);
+void		draw_mandelbrot(t_data *data);
+void		handle_scroll(double xoffset, double yoffset, void *param);
+void		handle_keys(mlx_key_data_t keydata, void *param);
 
 #endif

@@ -12,43 +12,25 @@
 
 #include "../include/fractol.h"
 
-void	draw_mandelbrot(t_data *data)
+static uint32_t get_color(int i, int maxIter)
 {
-	int			y;
-	int			x;
-	double		cRe;
-	double		cIm;
-	int			i;
-	uint32_t	color;
-	uint8_t		shade;
+	double t;
+    uint8_t r;
+	uint8_t g;
+	uint8_t b;
 
-	color = 0xFFF00FFF;
-	y = 0;
-	while (y < HEIGHT)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			cRe = data->minRe + (x / (double)WIDTH) * (data->maxRe
-					- data->minRe);
-			cIm = data->maxIm - (y / (double)HEIGHT) * (data->maxIm
-					- data->minIm);
-			i = mandelbrot_iterations(cRe, cIm, data->maxIter);
-			if (i == data->maxIter)
-				color = 0x000000FF;
-			else
-			{
-				shade = (uint8_t)(255.0 * i / data->maxIter);
-				color = (shade << 24) | (shade << 16) | (255 << 8) | 0xFF;
-			}
-			mlx_put_pixel(data->img, x, y, color);
-			x++;
-		}
-		y++;
-	}
+    if (i == maxIter)
+        return 0x0A0F30FF;
+
+    t = (double)i / maxIter;
+    r = (uint8_t)((1 - t) * 135 + t * 0);
+    g = (uint8_t)((1 - t) * 206 + t * 30);
+    b = (uint8_t)((1 - t) * 250 + t * 139);
+
+    return (r << 24) | (g << 16) | (b << 8) | 0xFF;
 }
 
-int	mandelbrot_iterations(double cRe, double cIm, int maxIter)
+static int	mandelbrot_iterations(double cRe, double cIm, int maxIter)
 {
 	double	zRe;
 	double	zIm;
@@ -67,3 +49,35 @@ int	mandelbrot_iterations(double cRe, double cIm, int maxIter)
 	}
 	return (i);
 }
+
+void	draw_mandelbrot(t_data *data)
+{
+	int			y;
+	int			x;
+	double		cRe;
+	double		cIm;
+	int			i;
+	double		scaleRe;
+	double		scaleIm;
+	uint32_t	color;
+
+	color = 0xFFF00FFF;
+	y = 0;
+	scaleRe = (data->maxRe - data->minRe) / WIDTH;
+	scaleIm = (data->maxIm - data->minIm) / HEIGHT;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			cRe = data->minRe + x * scaleRe;
+			cIm = data->maxIm - y * scaleIm;
+			i = mandelbrot_iterations(cRe, cIm, data->maxIter);
+			color = get_color(i, data->maxIter);
+			mlx_put_pixel(data->img, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
+

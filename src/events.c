@@ -12,6 +12,12 @@
 
 #include "../include/fractol.h"
 
+static void update_fractal(t_data *data)
+{
+	draw_mandelbrot(data);
+	mlx_image_to_window(data->mlx, data->img, 0, 0);
+}
+
 void	handle_scroll(double xoffset, double yoffset, void *param)
 {
 	t_data *data = (t_data *)param;
@@ -31,52 +37,34 @@ void	handle_scroll(double xoffset, double yoffset, void *param)
 	data->maxRe = cRe + (data->maxRe - cRe) * zoom_factor;
 	data->minIm = cIm + (data->minIm - cIm) * zoom_factor;
 	data->maxIm = cIm + (data->maxIm - cIm) * zoom_factor;
-
-	// Redibujar el fractal
-	draw_mandelbrot(data);
-	mlx_image_to_window(data->mlx, data->img, 0, 0);
+	update_fractal(data);
 }
 
 void handle_keys(mlx_key_data_t keydata, void *param)
 {
-    t_data *data = (t_data *)param;
-    double move_step_x;
-    double move_step_y;
+    t_data *data;
+    double move_step;
 
-    // Evitar advertencias de parámetros no usados (por ahora)
-    (void)keydata;
-
-    // Calculamos el paso de movimiento basado en el zoom actual
-    move_step_x = (data->maxRe - data->minRe) * 0.1;  // 10% del ancho visible
-    move_step_y = (data->maxIm - data->minIm) * 0.1;  // 10% del alto visible
-
-    // Verificamos qué tecla se presionó
-    if (keydata.action == MLX_PRESS)  // Solo cuando la tecla es presionada
-    {
-        if (keydata.key == MLX_KEY_LEFT)
-        {
-            data->minRe -= move_step_x;
-            data->maxRe -= move_step_x;
-        }
-        else if (keydata.key == MLX_KEY_RIGHT)
-        {
-            data->minRe += move_step_x;
-            data->maxRe += move_step_x;
-        }
-        else if (keydata.key == MLX_KEY_UP)
-        {
-            data->minIm += move_step_y;
-            data->maxIm += move_step_y;
-        }
-        else if (keydata.key == MLX_KEY_DOWN)
-        {
-            data->minIm -= move_step_y;
-            data->maxIm -= move_step_y;
-        }
-
-        // Redibujar el fractal después de cada movimiento
-        draw_mandelbrot(data);
-        mlx_image_to_window(data->mlx, data->img, 0, 0);
-    }
+	data = (t_data *)param;
+	if (keydata.action != MLX_PRESS)
+		return ;
+	move_step = (data->maxRe - data->minRe) * 0.1;
+	if (keydata.key == MLX_KEY_LEFT || keydata.key == MLX_KEY_RIGHT)
+	{
+		if (keydata.key == MLX_KEY_LEFT)
+			move_step = -move_step;
+		data->minRe += move_step;
+		data->maxRe += move_step;
+	}
+	else if (keydata.key == MLX_KEY_UP || keydata.key == MLX_KEY_DOWN)
+	{
+		if (keydata.key == MLX_KEY_DOWN)
+			move_step = -move_step;
+		data->minIm += move_step;
+		data->maxIm += move_step;
+	}
+	else
+		return ;
+	update_fractal(data);
 }
 

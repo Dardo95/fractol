@@ -11,7 +11,7 @@ NAME = fractol
 MLX_DIR = MLX42
 MLX_BUILD_DIR = $(MLX_DIR)/build
 MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
-MLX_FLAGS = -L$(MLX_BUILD_DIR) -ldl -pthread -lm -lglfw
+MLX_FLAGS = -L$(MLX_BUILD_DIR) -ldl -lglfw -pthread -lm
 
 # Configuración de Libft
 LIBFT_DIR = ./Libft
@@ -21,7 +21,6 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRCS =  $(SRC_DIR)/fractals.c \
 		$(SRC_DIR)/utils.c \
 		$(SRC_DIR)/draw.c \
-		$(SRC_DIR)/events.c \
 		$(SRC_DIR)/main.c
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
@@ -39,8 +38,7 @@ libft:
 
 # Crear el ejecutable
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX_LIB) $(LIBFT) -L$(MLX_BUILD_DIR) -lglfw -ldl -pthread -lm
-
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS) $(MLX_LIB) $(LIBFT)
 
 # Compilación de objetos
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c

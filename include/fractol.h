@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:22:04 by enogueir          #+#    #+#             */
-/*   Updated: 2025/02/06 13:12:37 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:27:09 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define WIDTH 720
-# define HEIGHT 404
+# define WIDTH 1920
+# define HEIGHT 1080
 
 typedef struct s_complex
 {

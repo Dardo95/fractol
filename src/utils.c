@@ -1,12 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 14:20:28 by enogueir          #+#    #+#             */
-/*   Updated: 2025/01/22 15:07:11 by enogueir         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../include/fractol.h"
 
+void	handle_close(void *param)
+{
+	t_data *data;
+
+	data = (t_data *)param;
+	cleanup(data);
+	exit(EXIT_SUCCESS);
+}

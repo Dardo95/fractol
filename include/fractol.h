@@ -23,8 +23,10 @@
 
 typedef struct s_complex
 {
-	double	c_re;
+	double 	c_re;
 	double	c_im;
+	double	z_re;
+	double	z_im;
 }			t_complex;
 
 typedef struct s_data
@@ -38,12 +40,17 @@ typedef struct s_data
 	double		scale_re;
 	double		scale_im;
 	int			max_iter;
+	int			fractal_type;
+	t_complex 	mand_c;
+	double		j_c_r;
+	double		j_c_i;
 }				t_data;
 
-void		draw_mandelbrot(t_data *data, t_complex *comp);
+void		draw_mandelbrot(t_data *data);
+void		draw_julia(t_data *data);
+void		set_julia_params(char **argv, t_data *data);
 void		handle_scroll(double xoffset, double yoffset, void *param);
 void		handle_keys(mlx_key_data_t keydata, void *param);
 void		cleanup(t_data *data);
-void		handle_close(void *param);
 
 #endif

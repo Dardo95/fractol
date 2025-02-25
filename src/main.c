@@ -6,19 +6,39 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:53:10 by enogueir          #+#    #+#             */
-/*   Updated: 2025/01/22 17:02:27 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/02/25 22:44:45 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fractol.h"
 
-int	init_data(t_data *data)
+static void	set_fractal_limits(t_data *data, char *fractal_type)
 {
-	data->min_re = -2.0;
-	data->max_re = 1.0;
-	data->min_im = -1.2;
-	data->max_im = 1.2;
+	if (ft_strncmp(fractal_type, "mandelbrot", 10) == 0)
+	{
+		data->min_re = -2.0;
+		data->max_re = 1.0;
+		data->min_im = -1.2;
+		data->max_im = 1.2;
+	}
+	else if (ft_strncmp(fractal_type, "julia", 5) == 0)
+	{
+		data->min_re = -2.0;
+		data->max_re = 2.0;
+		data->min_im = -2.0;
+		data->max_im = 2.0;
+	}
+	else
+	{
+		ft_printf("ERROR: Fractal no reconocido\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
+static int	init_data(t_data *data, char *fractal_type)
+{
 	data->max_iter = 60;
+	set_fractal_limits(data, fractal_type);
 	data->mlx = mlx_init(WIDTH, HEIGHT, "fractol", true);
 	if (!data->mlx)
 	{
@@ -35,34 +55,23 @@ int	init_data(t_data *data)
 	return (1);
 }
 
-void	cleanup(t_data *data)
+static int	choose_fractal(char **argv, t_data *data)
 {
-	if (!data)
-		return;
-	if (data->img)
-	{
-		mlx_delete_image(data->mlx, data->img);
-		data->img = NULL;
-	}
-	if (data->mlx)
-    {
-		mlx_terminate(data->mlx);
-		data->mlx = NULL;
-	}
-}
-
-static int	choose_fractal(char **argv, t_data *data, t_complex *complex)
-{
+	data->fractal_type = 0;
 	if (ft_strncmp(argv[1], "mandelbrot", 10) == 0)
-		draw_mandelbrot(data, complex);
+	{
+		data->fractal_type = 1;
+		draw_mandelbrot(data);
+	}
 	else if (ft_strncmp(argv[1], "julia", 5) == 0)
 	{
-		ft_printf("hola\n");
-		return (EXIT_SUCCESS);
+		data->fractal_type = 2;
+		set_julia_params(argv, data);
+		draw_julia(data);
 	}
 	else
 	{
-		ft_printf("Unrecognized fractal. Use 'mandelbrot' or 'julia'.\n");
+		ft_printf("Use 'mandelbrot' or 'julia [c_re c_im]'.\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -71,14 +80,13 @@ static int	choose_fractal(char **argv, t_data *data, t_complex *complex)
 int	main(int argc, char **argv)
 {
 	t_data		data;
-	t_complex	complex;
 
 	if (argc < 2)
 	{
 		ft_printf("Usage: ./fractol mandelbrot | julia [cRe cIm]\n");
 		return (EXIT_FAILURE);
 	}
-	if (!init_data(&data))
+	if (!init_data(&data, argv[1]))
 		return (EXIT_FAILURE);
 	if (mlx_image_to_window(data.mlx, data.img, 0, 0))
 	{
@@ -86,11 +94,10 @@ int	main(int argc, char **argv)
 		cleanup(&data);
 		return (EXIT_FAILURE);
 	}
-	choose_fractal(argv, &data, &complex);
+	choose_fractal(argv, &data);
 	mlx_scroll_hook(data.mlx, handle_scroll, &data);
 	mlx_key_hook(data.mlx, handle_keys, &data);
 	mlx_loop(data.mlx);
-	mlx_close_hook(data.mlx, handle_close, &data);
 	cleanup(&data);
 	return (EXIT_SUCCESS);
 }

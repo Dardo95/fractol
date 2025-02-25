@@ -6,15 +6,26 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:53:10 by enogueir          #+#    #+#             */
-/*   Updated: 2025/01/22 17:02:27 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/02/25 22:43:46 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fractol.h"
 
-static void	update_fractal(t_data *data, t_complex *comp)
+void	update_fractal(t_data *data)
 {
-	draw_mandelbrot(data, comp);
+	mlx_delete_image(data->mlx, data->img);
+	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (!data->img)
+	{
+		ft_printf("ERROR: MLX img failed\n");
+		mlx_terminate(data->mlx);
+		exit(EXIT_FAILURE);
+	}
+	if (data->fractal_type == 1)
+		draw_mandelbrot(data);
+	else if (data->fractal_type == 2)
+		draw_julia(data);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 }
 
@@ -41,7 +52,7 @@ void	handle_scroll(double xoffset, double yoffset, void *param)
 	data->max_re = comp.c_re + (data->max_re - comp.c_re) * zoom_factor;
 	data->min_im = comp.c_im + (data->min_im - comp.c_im) * zoom_factor;
 	data->max_im = comp.c_im + (data->max_im - comp.c_im) * zoom_factor;
-	update_fractal(data, &comp);
+	update_fractal(data);
 }
 
 void	move_view(t_data *data, mlx_key_data_t keydata)
@@ -77,13 +88,11 @@ void	handle_exit(t_data *data, mlx_key_data_t keydata)
 void	handle_keys(mlx_key_data_t keydata, void *param)
 {
 	t_data		*data;
-	t_complex	comp ;
 
 	data = (t_data *)param;
 	if (keydata.action != MLX_PRESS)
 		return ;
 	handle_exit(data, keydata);
 	move_view(data, keydata);
-	update_fractal(data, &comp);
+	update_fractal(data);
 }
-

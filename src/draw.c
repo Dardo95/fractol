@@ -6,35 +6,25 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:07:20 by enogueir          #+#    #+#             */
-/*   Updated: 2025/02/25 22:43:21 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/02/26 21:33:29 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fractol.h"
 
-static uint32_t	get_color(int i, int max_iter)
+static uint32_t	get_hsv_color(t_data *data, int i)
 {
-	double	t;
-	uint8_t	r;
-	uint8_t	g;
-	uint8_t	b;
+	double	hue;
+	double	sat;
+	double	val;
 
-	if (i == max_iter)
-		return (0x000000FF);
-	t = (double)i / max_iter;
-	if (t < 0.5)
-	{
-		r = (uint8_t)((1 - t) * 135 + t * 0);
-		g = (uint8_t)((1 - t) * 206 + t * 30);
-		b = (uint8_t)((1 - t) * 250 + t * 139);
-	}
-	else
-	{
-		r = (uint8_t)((t - 0.5) * 2 * 255);
-		g = (uint8_t)((t - 0.5) * 2 * 255);
-		b = 0;
-	}
-	return ((r << 24) | (g << 16) | (b << 8) | 0xFF);
+	if (i == data->max_iter)
+		return (0xFF000000);
+	hue = ((double)i * 360.0) / data->max_iter;
+	hue = fmod(hue + pow(data->fractal_type, 1.5), 360.0);
+	sat = 100.0;
+	val = ((double)i / data->max_iter) * 100.0;
+	return (hsv2rgb(hue, sat, val));
 }
 
 static int	mandelbrot_iterations(t_complex *comp, int max_iter)
@@ -77,7 +67,7 @@ void	draw_mandelbrot(t_data *data)
 			data->mand_c.c_re = data->min_re + x * data->scale_re;
 			data->mand_c.c_im = data->max_im - y * data->scale_im;
 			i = mandelbrot_iterations(&data->mand_c, data->max_iter);
-			color = get_color(i, data->max_iter);
+			color = get_hsv_color(data, i);
 			mlx_put_pixel(data->img, x, y, color);
 			x++;
 		}
@@ -124,7 +114,7 @@ void	draw_julia(t_data *data)
 			pixel.c_re = data->j_c_r;
 			pixel.c_im = data->j_c_i;
 			i = julia_iterations(&pixel, data->max_iter);
-			color = get_color(i, data->max_iter);
+			color = get_hsv_color(data, i);
 			mlx_put_pixel(data->img, x, y, color);
 			x++;
 		}

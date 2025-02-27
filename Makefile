@@ -1,6 +1,6 @@
 # Variables generales
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 BUILD_DIR = build
 SRC_DIR = src
 INC_DIR = include
@@ -22,6 +22,7 @@ SRCS =  $(SRC_DIR)/fractals.c \
 		$(SRC_DIR)/utils.c \
 		$(SRC_DIR)/draw.c \
 		$(SRC_DIR)/events.c \
+		$(SRC_DIR)/hsv_map.c \
 		$(SRC_DIR)/main.c
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))

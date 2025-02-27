@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 17:42:34 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/07 01:28:33 by ryner            ###   ########.fr       */
+/*   Updated: 2025/02/26 21:35:43 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdarg.h>
 # include <fcntl.h>
 # include <stdlib.h>
-# include <unistd.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -54,6 +53,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_atoi(const char *nptr);
+double	ft_atof(const char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);

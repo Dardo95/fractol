@@ -13,6 +13,7 @@ SRC =           ft_atoi.c \
                 ft_isdigit.c \
                 ft_isprint.c \
                 ft_itoa.c \
+				ft_atof.c \
                 ft_lstadd_back_bonus.c \
                 ft_lstadd_front_bonus.c \
                 ft_lstclear_bonus.c \
